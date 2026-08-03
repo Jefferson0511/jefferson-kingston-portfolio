@@ -1,0 +1,5 @@
+# Useful in the repo, irrelevant to the build.
+docs/
+.superpowers/
+.claude/
+.playwright-mcp/

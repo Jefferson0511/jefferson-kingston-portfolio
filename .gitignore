@@ -42,3 +42,6 @@ Thumbs.db
 # The leading slash keeps public/*.png (real project images) tracked.
 .playwright-mcp/
 /*.png
+
+.vercel
+.env*
