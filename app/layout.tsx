@@ -1,12 +1,10 @@
 import type { Metadata } from 'next'
 import { Inter, IBM_Plex_Mono } from 'next/font/google'
+import { SkipLink } from '@/components/primitives/SkipLink'
+import { profile } from '@/content/profile'
 import './globals.css'
 
-const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-inter',
-})
+const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' })
 
 // Only 400 (default) and 600 (font-semibold, used by MetricStrip) are ever
 // applied. Declaring 500 as well made next/font preload a file the page never
@@ -19,13 +17,32 @@ const plexMono = IBM_Plex_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Jefferson David Kingston',
+  title: {
+    default: `${profile.name} — ML and Computer Vision`,
+    template: `%s — ${profile.name}`,
+  },
+  description:
+    'MS Computer Science at Northeastern. I build systems that detect, track and interpret signals in real time, including an IEEE-published wildlife intrusion detection system.',
+  // Stays until the Phase 4 launch gate passes. Removing this early risks
+  // Google caching a half-finished portfolio, which cannot be quickly undone.
+  robots: { index: false, follow: false },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${plexMono.variable}`}>
-      <body>{children}</body>
+      <body className="bg-surface text-ink antialiased">
+        <SkipLink />
+        {/* The layout owns the single main landmark. No page declares its own. */}
+        <main id="content" className="mx-auto max-w-4xl px-5 py-16 sm:px-8">
+          {children}
+        </main>
+        <footer className="mx-auto max-w-4xl px-5 pb-12 sm:px-8">
+          <p className="font-mono text-[0.625rem] uppercase tracking-[0.13em] text-ink-faint">
+            {profile.name}
+          </p>
+        </footer>
+      </body>
     </html>
   )
 }
