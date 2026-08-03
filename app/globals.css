@@ -1,1 +1,63 @@
 @import "tailwindcss";
+
+@theme {
+  /* Surfaces */
+  --color-surface: #1a2430;
+  --color-surface-raised: #212e3c;
+  --color-surface-sunken: #131c25;
+
+  /* Ink — ratios vs --color-surface */
+  --color-ink: #e6edf4;        /* 13.3:1 */
+  --color-ink-muted: #93a6b8;  /*  6.3:1 */
+  --color-ink-faint: #7d92a8;  /*  4.9:1 */
+
+  /* The only two semantic colours */
+  --color-detect: #4fd8e4;     /*  9.2:1 — detected / confirmed */
+  --color-alert: #f0a032;      /*  7.3:1 — alert / intrusion */
+
+  /* Lines — two tokens on purpose, see below */
+  --color-line-strong: #607890; /* 3.4:1 — interactive boundaries, WCAG 1.4.11 */
+  --color-line: #33465a;        /* 1.6:1 — DECORATIVE DIVIDERS ONLY */
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+
+  --text-display: clamp(2rem, 5vw, 3.25rem);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-surface);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Every numeral on this site is mono and tabular. */
+  .num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* outline:none is prohibited project-wide. */
+  :focus-visible {
+    outline: 2px solid var(--color-detect);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
