@@ -1,0 +1,18 @@
+import type { Role } from './types'
+
+export const experience: Role[] = [
+  {
+    org: 'National University of Singapore',
+    title: 'Academic Internship — Computer Vision',
+    period: 'Dec 2023 – Jan 2024',
+    summary:
+      'Built a real-time sign language interpretation pipeline using MediaPipe Holistic and LSTM classification, optimized for latency and deployed for browser-based inference.',
+  },
+  {
+    org: 'AAM India',
+    title: 'Data Analyst Intern',
+    period: 'Oct – Nov 2023',
+    summary:
+      'Data collection, preprocessing and feature engineering for ML pipelines targeting defect detection. Built baseline computer vision models for automated inspection.',
+  },
+]
