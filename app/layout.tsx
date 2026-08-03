@@ -8,9 +8,12 @@ const inter = Inter({
   variable: '--font-inter',
 })
 
+// Only 400 (default) and 600 (font-semibold, used by MetricStrip) are ever
+// applied. Declaring 500 as well made next/font preload a file the page never
+// used, which cost bytes and produced a browser preload warning.
 const plexMono = IBM_Plex_Mono({
   subsets: ['latin'],
-  weight: ['400', '500', '600'],
+  weight: ['400', '600'],
   display: 'swap',
   variable: '--font-plex-mono',
 })
