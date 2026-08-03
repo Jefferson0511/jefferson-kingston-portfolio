@@ -9,7 +9,10 @@ export default function NotFound() {
        */}
       <p className="font-mono text-[0.6875rem] uppercase tracking-[0.15em] text-alert">
         <span className="tabular-nums">404</span>
-        <span className="mx-2 text-line-strong">/</span>
+        {/* Same fix as SectionHeader: --line-strong fails text contrast at 3.43:1. */}
+        <span aria-hidden="true" className="mx-2 text-ink-faint">
+          /
+        </span>
         No detection
       </p>
       <h1

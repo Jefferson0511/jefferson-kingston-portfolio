@@ -54,11 +54,23 @@ export function Hero() {
             Resume pending
           </span>
         )}
-        <a href={`mailto:${profile.email}`} className="text-sm text-ink-muted hover:text-detect">
+        {/*
+         * inline-block + py-1 lifts these to 28px tall. WCAG 2.2 SC 2.5.8 wants
+         * 24x24 minimum, and they measured 20px. The sentence exception does not
+         * apply — these are standalone nav links, not links inside prose.
+         */}
+        <a
+          href={`mailto:${profile.email}`}
+          className="inline-block py-1 text-sm text-ink-muted hover:text-detect"
+        >
           {profile.email}
         </a>
         {profile.links.map((link) => (
-          <a key={link.href} href={link.href} className="text-sm text-ink-muted hover:text-detect">
+          <a
+            key={link.href}
+            href={link.href}
+            className="inline-block py-1 text-sm text-ink-muted hover:text-detect"
+          >
             {link.label}
           </a>
         ))}
