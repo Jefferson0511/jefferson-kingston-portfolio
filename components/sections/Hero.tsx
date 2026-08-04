@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { DetectionFrame } from '@/components/primitives/DetectionFrame'
-import { HeroVideo } from '@/components/primitives/HeroVideo'
+import { DetectionClip } from '@/components/primitives/DetectionClip'
 import { MetricStrip } from '@/components/primitives/MetricStrip'
 import { EvidenceChip } from '@/components/primitives/EvidenceChip'
 import { Icon, type IconName } from '@/components/primitives/Icon'
@@ -133,10 +133,12 @@ export function Hero() {
          */}
         <div className="enter" style={delay(350)}>
           {demo ? (
-            <HeroVideo
+            <DetectionClip
+              mode="ambient"
               src={demo.src}
               caption={demo.shortCaption}
               maxWidth={Math.min(demo.maxWidth, 420)}
+              aspect={demo.aspect}
             />
           ) : (
             <DetectionFrame

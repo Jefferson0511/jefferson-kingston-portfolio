@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SectionHeader } from '@/components/primitives/SectionHeader'
 import { DetectionFrame } from '@/components/primitives/DetectionFrame'
-import { DemoVideo } from '@/components/primitives/DemoVideo'
+import { DetectionClip } from '@/components/primitives/DetectionClip'
 import { MetricStrip } from '@/components/primitives/MetricStrip'
 import { EvidenceChip } from '@/components/primitives/EvidenceChip'
 import { ChannelDiagram } from '@/components/primitives/ChannelDiagram'
@@ -56,10 +56,12 @@ export default function WildlifeIntrusionCaseStudy() {
            * project does. Falls back to a DetectionFrame when no clip exists.
            */}
           {wildlifeNarrative.demo ? (
-            <DemoVideo
+            <DetectionClip
+              mode="inspect"
               src={wildlifeNarrative.demo.src}
               caption={wildlifeNarrative.demo.caption}
               maxWidth={wildlifeNarrative.demo.maxWidth}
+              aspect={wildlifeNarrative.demo.aspect}
             />
           ) : (
             <DetectionFrame
