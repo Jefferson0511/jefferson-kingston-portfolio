@@ -3,6 +3,12 @@ import type { Channel } from './types'
 export type DemoClip = {
   src: string
   caption: string
+  /**
+   * A one-line version for the hero, where the frame is small and the caption
+   * sits in a narrow column. Says the same thing in fewer words rather than
+   * saying less — it still names the models and still says "recorded".
+   */
+  shortCaption: string
   /** Native width in pixels. The player is capped here so it is never upscaled. */
   maxWidth: number
 }
@@ -46,6 +52,7 @@ export const wildlifeNarrative: CaseStudyNarrative = {
     src: '/wildlife-detection-demo.mp4',
     caption:
       'Real detection output: YOLOv8n bounding boxes with DeepSORT track identities persisting across frames as subjects move through the scene.',
+    shortCaption: 'Recorded output — YOLOv8n detection, DeepSORT tracking',
     maxWidth: 640,
   },
 }

@@ -28,5 +28,6 @@ export const profile: Profile = {
     },
   ],
   bio: null,
+  availability: null,
   resumeHref: '/jefferson-kingston-resume.pdf',
 }

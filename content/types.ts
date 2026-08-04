@@ -95,6 +95,12 @@ export type Profile = {
   education: Role[]
   /** null until the bio is written. About section renders a visible pending well. */
   bio: string | null
+  /**
+   * What Jefferson is actually looking for and when, e.g. the co-op term and
+   * start date. null until he states it, because a guessed availability window
+   * is the kind of claim a recruiter acts on and then finds to be wrong.
+   */
+  availability: string | null
   /** null until the ML/CV resume PDF is added to public/. */
   resumeHref: string | null
 }

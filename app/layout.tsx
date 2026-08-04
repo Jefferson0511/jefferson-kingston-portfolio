@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter, IBM_Plex_Mono } from 'next/font/google'
 import { SkipLink } from '@/components/primitives/SkipLink'
+import { SiteHeader } from '@/components/primitives/SiteHeader'
 import { profile } from '@/content/profile'
 import './globals.css'
 
@@ -33,14 +34,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${inter.variable} ${plexMono.variable}`}>
       <body className="bg-surface text-ink antialiased">
         <SkipLink />
+        {/* Sticky, so the resume and contact details never scroll out of reach. */}
+        <SiteHeader />
         {/* The layout owns the single main landmark. No page declares its own. */}
-        <main id="content" className="mx-auto max-w-4xl px-5 py-16 sm:px-8">
+        <main id="content" className="mx-auto max-w-4xl px-5 py-14 sm:px-8">
           {children}
         </main>
         <footer className="mx-auto max-w-4xl px-5 pb-12 sm:px-8">
-          <p className="font-mono text-[0.625rem] uppercase tracking-[0.13em] text-ink-faint">
-            {profile.name}
-          </p>
+          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line pt-6">
+            <p className="font-mono text-[0.625rem] uppercase tracking-[0.13em] text-ink-faint">
+              {profile.name}
+            </p>
+            <a
+              href="#content"
+              className="inline-block py-1 font-mono text-[0.625rem] uppercase tracking-[0.13em] text-ink-faint transition-colors hover:text-detect"
+            >
+              Back to top &uarr;
+            </a>
+          </div>
         </footer>
       </body>
     </html>

@@ -50,6 +50,12 @@
     outline-offset: 2px;
   }
 
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -59,5 +65,105 @@
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
     }
+  }
+}
+
+/*
+ * ─── Motion ───────────────────────────────────────────────────────────────
+ *
+ * A site whose thesis is real-time perception cannot be inert, so motion here
+ * is thematic rather than decorative: things resolve into place, the way a
+ * detector settles on a subject.
+ *
+ * Two rules govern all of it:
+ *
+ * 1. Motion is opt-in, never load-bearing. Every animation ends at the state
+ *    the element already has in the HTML, so a browser that ignores all of
+ *    this shows a complete page. Nothing is hidden waiting to be revealed.
+ *
+ * 2. `prefers-reduced-motion: no-preference` gates each block explicitly. The
+ *    global `reduce` override above cannot be relied on for scroll-driven
+ *    animations, because their progress comes from scroll position and not
+ *    from `animation-duration` — zeroing the duration does nothing to them.
+ */
+/*
+ * Keyframe names are namespaced because @keyframes share one flat global scope
+ * and the last definition of a name silently wins. An earlier pass named one of
+ * these `pulse`, which collided with the `@keyframes pulse` Tailwind ships for
+ * `animate-pulse`; Tailwind's came later in the sheet, so the browser ran its
+ * timing while this file claimed otherwise. Nothing warns about that.
+ */
+@layer components {
+  /* Entrance. The hero introduces itself once, on load. */
+  @media (prefers-reduced-motion: no-preference) {
+    .enter {
+      animation: resolve-in 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation-delay: var(--enter-delay, 0ms);
+    }
+  }
+
+  /*
+   * Reveal on scroll, with no JavaScript and no IntersectionObserver: a
+   * view() timeline ties progress to the element's own position in the
+   * viewport. Firefox has not shipped it, so @supports means those users get
+   * the static page rather than a broken one.
+   *
+   * :not(:first-of-type) exempts the hero — it is already on screen at load
+   * and owns .enter instead.
+   */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      main > section:not(:first-of-type) {
+        animation: resolve-in linear both;
+        animation-timeline: view();
+        animation-range: entry 5% cover 22%;
+      }
+
+      .bar-grow {
+        transform-origin: left center;
+        animation: sweep-out linear both;
+        animation-timeline: view();
+        animation-range: entry 25% cover 45%;
+      }
+    }
+  }
+
+  /* The status dot in the header. The one piece of looping motion on the site. */
+  @media (prefers-reduced-motion: no-preference) {
+    .pulse {
+      animation: status-pulse 2.4s ease-in-out infinite;
+    }
+  }
+}
+
+@keyframes resolve-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Sensor bars fill as the fusion diagram scrolls in, so the chart reads as a
+   measurement being taken rather than a static bar chart. */
+@keyframes sweep-out {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes status-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
   }
 }

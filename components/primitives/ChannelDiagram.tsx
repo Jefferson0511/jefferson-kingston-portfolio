@@ -28,8 +28,14 @@ export function ChannelDiagram({ channels, fusedLabel }: Props) {
               {channel.name}
             </span>
             <span className="relative block h-3.5 overflow-hidden rounded-sm bg-surface-raised">
+              {/*
+               * bar-grow ties the fill to a scroll timeline, so the bars sweep
+               * out as the diagram enters view and the chart reads as a
+               * measurement being taken. The width below is the resting state,
+               * so a browser without scroll timelines shows the finished bar.
+               */}
               <span
-                className={`absolute inset-y-0 left-0 ${FILLS[channel.kind]} opacity-90`}
+                className={`bar-grow absolute inset-y-0 left-0 ${FILLS[channel.kind]} opacity-90`}
                 style={{ width: `${channel.strength}%` }}
               />
               {/* A bar conveyed only by width is invisible to a screen reader. */}
