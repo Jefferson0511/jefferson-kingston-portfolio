@@ -89,6 +89,8 @@ export type Profile = {
   thesis: string
   status: string
   email: string
+  /** Explicit rather than searched out of `links` by label. */
+  githubUrl: string
   links: ExternalLink[]
   education: Role[]
   /** null until the bio is written. About section renders a visible pending well. */

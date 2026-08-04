@@ -5,6 +5,7 @@ export const profile: Profile = {
   thesis: 'Systems that detect, track and interpret signals in real time.',
   status: 'MS Computer Science, Northeastern University',
   email: 'kingston.je@northeastern.edu',
+  githubUrl: 'https://github.com/jefferson0511',
   links: [
     // Confirmed correct: repos live on this account. The Pages site at
     // jefferson0511.github.io/portfolio-website is the separate photography
@@ -27,5 +28,5 @@ export const profile: Profile = {
     },
   ],
   bio: null,
-  resumeHref: null,
+  resumeHref: '/jefferson-kingston-resume.pdf',
 }
