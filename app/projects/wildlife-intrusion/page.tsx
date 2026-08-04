@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SectionHeader } from '@/components/primitives/SectionHeader'
 import { DetectionFrame } from '@/components/primitives/DetectionFrame'
+import { DemoVideo } from '@/components/primitives/DemoVideo'
 import { MetricStrip } from '@/components/primitives/MetricStrip'
 import { EvidenceChip } from '@/components/primitives/EvidenceChip'
 import { ChannelDiagram } from '@/components/primitives/ChannelDiagram'
@@ -48,11 +49,25 @@ export default function WildlifeIntrusionCaseStudy() {
           ))}
         </div>
         <div className="mt-8">
-          <DetectionFrame
-            image={featuredProject.image}
-            priority
-            pendingLabel="Wildlife detection frame pending"
-          />
+          {/*
+           * The real footage is the strongest evidence on this page, so it opens
+           * the case study. A still cannot demonstrate tracking at all — only
+           * detection — and persistent track identities are half of what this
+           * project does. Falls back to a DetectionFrame when no clip exists.
+           */}
+          {wildlifeNarrative.demo ? (
+            <DemoVideo
+              src={wildlifeNarrative.demo.src}
+              caption={wildlifeNarrative.demo.caption}
+              maxWidth={wildlifeNarrative.demo.maxWidth}
+            />
+          ) : (
+            <DetectionFrame
+              image={featuredProject.image}
+              priority
+              pendingLabel="Wildlife detection frame pending"
+            />
+          )}
         </div>
       </section>
 

@@ -1,5 +1,12 @@
 import type { Channel } from './types'
 
+export type DemoClip = {
+  src: string
+  caption: string
+  /** Native width in pixels. The player is capped here so it is never upscaled. */
+  maxWidth: number
+}
+
 export type CaseStudyNarrative = {
   /** null until the vision-only failure modes are described. */
   problem: string | null
@@ -9,6 +16,8 @@ export type CaseStudyNarrative = {
   results: string
   channels: Channel[]
   fusedLabel: string
+  /** null when no footage exists; the header falls back to a DetectionFrame. */
+  demo: DemoClip | null
 }
 
 export const wildlifeNarrative: CaseStudyNarrative = {
@@ -29,4 +38,14 @@ export const wildlifeNarrative: CaseStudyNarrative = {
     { name: 'Ultrasonic', strength: 47, kind: 'neutral' },
   ],
   fusedLabel: 'confirmed',
+  /*
+   * 640x360 native, 16s, no audio track. Capped at its own width so it is never
+   * upscaled — stretching it to the 832px layout width would read as soft.
+   */
+  demo: {
+    src: '/wildlife-detection-demo.mp4',
+    caption:
+      'Real detection output: YOLOv8n bounding boxes with DeepSORT track identities persisting across frames as subjects move through the scene.',
+    maxWidth: 640,
+  },
 }
