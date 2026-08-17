@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 import { ImageResponse } from 'next/og'
 import { profile } from '@/content/profile'
 
@@ -25,6 +27,20 @@ const SURFACE = '#1a2430'
 const DETECT = '#4fd8e4'
 const LINE_STRONG = '#607890'
 
+/*
+ * Inter is loaded from a committed file rather than left to satori's bundled
+ * fallback, which shaped the name and thesis with visibly uneven word spacing.
+ *
+ * These are .woff on purpose: satori reads ttf, otf and woff but not woff2, so
+ * the faces next/font already self-hosts for the site are unusable here. Read at
+ * build time only — this route prerenders to a PNG, so neither file is ever sent
+ * to a browser.
+ */
+const fonts = [
+  { name: 'Inter', weight: 400 as const, style: 'normal' as const, data: readFileSync(join(process.cwd(), 'app/fonts/inter-latin-400-normal.woff')) },
+  { name: 'Inter', weight: 600 as const, style: 'normal' as const, data: readFileSync(join(process.cwd(), 'app/fonts/inter-latin-600-normal.woff')) },
+]
+
 // Satori supports flexbox but not grid, so every container is an explicit flex.
 export default function Image() {
   const tick = { position: 'absolute' as const, width: 26, height: 26 }
@@ -41,6 +57,7 @@ export default function Image() {
           backgroundColor: SURFACE,
           padding: 72,
           position: 'relative',
+          fontFamily: 'Inter',
         }}
       >
         {/* The detection-box motif from DetectionFrame, carried onto the card. */}
@@ -70,7 +87,9 @@ export default function Image() {
             style={{
               display: 'flex',
               marginTop: 22,
-              maxWidth: 880,
+              // Wide enough for the thesis to set on one line. At 880 it broke
+              // after "real", orphaning "time." on a line of its own.
+              maxWidth: 1010,
               fontSize: 33,
               lineHeight: 1.4,
               color: INK_MUTED,
@@ -110,6 +129,6 @@ export default function Image() {
         </div>
       </div>
     ),
-    size,
+    { ...size, fonts },
   )
 }
