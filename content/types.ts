@@ -55,7 +55,15 @@ export type Credential = {
   title: string
   venue: string
   identifier: string | null
+  /** Human-readable, e.g. "Apr 2026". Shown on the page. */
   date: string
+  /**
+   * The same date as ISO 8601, e.g. "2026-04". Stored rather than parsed out of
+   * `date`, because structured data needs a machine-readable value and parsing
+   * a display string is the kind of thing that breaks silently once the display
+   * format changes.
+   */
+  isoDate: string
   href: string | null
 }
 

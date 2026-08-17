@@ -3,6 +3,7 @@ import { Inter, IBM_Plex_Mono } from 'next/font/google'
 import { SkipLink } from '@/components/primitives/SkipLink'
 import { SiteHeader } from '@/components/primitives/SiteHeader'
 import { profile } from '@/content/profile'
+import { site } from '@/content/site'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' })
@@ -17,16 +18,30 @@ const plexMono = IBM_Plex_Mono({
   variable: '--font-plex-mono',
 })
 
+const description =
+  'MS Computer Science at Northeastern. I build systems that detect, track and interpret signals in real time, including an IEEE-published wildlife intrusion detection system.'
+
 export const metadata: Metadata = {
+  // Makes every relative URL below resolve absolutely, which Open Graph requires.
+  metadataBase: new URL(site.url),
   title: {
     default: `${profile.name} — ML and Computer Vision`,
     template: `%s — ${profile.name}`,
   },
-  description:
-    'MS Computer Science at Northeastern. I build systems that detect, track and interpret signals in real time, including an IEEE-published wildlife intrusion detection system.',
-  // Stays until the Phase 4 launch gate passes. Removing this early risks
-  // Google caching a half-finished portfolio, which cannot be quickly undone.
-  robots: { index: false, follow: false },
+  description,
+  // Driven by the one launch flag, together with app/robots.ts. See content/site.ts
+  // for why this is a single constant and what has to be true before it flips.
+  robots: site.launchReady ? { index: true, follow: true } : { index: false, follow: false },
+  openGraph: {
+    type: 'profile',
+    title: `${profile.name} — ML and Computer Vision`,
+    description,
+    url: site.url,
+    // No `images` entry here on purpose: app/opengraph-image.tsx is a file
+    // convention and Next injects the og:image tags from it. Declaring it again
+    // would emit a duplicate.
+  },
+  twitter: { card: 'summary_large_image' },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

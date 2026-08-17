@@ -10,6 +10,7 @@ export const credentials: Credential[] = [
     // No DOI supplied. Deliberately null rather than invented.
     identifier: null,
     date: 'Apr 2026',
+    isoDate: '2026-04',
     href: null,
   },
   {
@@ -18,6 +19,7 @@ export const credentials: Credential[] = [
     venue: 'Indian Patent',
     identifier: 'Application No. 202441075847',
     date: 'Oct 2024',
+    isoDate: '2024-10',
     href: null,
   },
 ]

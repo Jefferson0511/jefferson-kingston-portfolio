@@ -7,10 +7,12 @@ import { Skills } from '@/components/sections/Skills'
 import { Achievements } from '@/components/sections/Achievements'
 import { About } from '@/components/sections/About'
 import { Contact } from '@/components/sections/Contact'
+import { PersonSchema } from '@/components/primitives/StructuredData'
 
 export default function Home() {
   return (
     <>
+      <PersonSchema />
       <Hero />
       <Featured />
       <Credentials />

@@ -6,6 +6,7 @@ import { DetectionClip } from '@/components/primitives/DetectionClip'
 import { MetricStrip } from '@/components/primitives/MetricStrip'
 import { EvidenceChip } from '@/components/primitives/EvidenceChip'
 import { ChannelDiagram } from '@/components/primitives/ChannelDiagram'
+import { PublicationSchema } from '@/components/primitives/StructuredData'
 import { featuredProject } from '@/content/projects'
 import { credentials } from '@/content/credentials'
 import { wildlifeNarrative } from '@/content/caseStudy'
@@ -28,6 +29,10 @@ function Pending({ children }: { children: React.ReactNode }) {
 export default function WildlifeIntrusionCaseStudy() {
   return (
     <>
+      {/* A <script> before the sections does not disturb `section:first-of-type`,
+          which the scroll-reveal rule in globals.css depends on. */}
+      <PublicationSchema />
+
       {/* 01 — Header */}
       <section aria-labelledby="cs-heading" className="mb-20">
         <Link
