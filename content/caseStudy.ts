@@ -21,10 +21,14 @@ export type DemoClip = {
 }
 
 export type CaseStudyNarrative = {
-  /** null until the vision-only failure modes are described. */
-  problem: string | null
-  /** null until the tradeoffs behind each choice are explained. */
-  approach: string | null
+  /*
+   * Paragraphs, not one string. These sections carry a real argument and need
+   * the breaks to be readable; a single string forced everything into one <p>
+   * and ran four distinct points together. An empty array means not yet
+   * written, and the page shows its pending marker.
+   */
+  problem: string[]
+  approach: string[]
   dataset: string
   results: string
   channels: Channel[]
@@ -34,8 +38,18 @@ export type CaseStudyNarrative = {
 }
 
 export const wildlifeNarrative: CaseStudyNarrative = {
-  problem: null,
-  approach: null,
+  problem: [
+    'Two things go wrong with a vision-only setup, and each one makes the other worse.',
+    'The first is power. To catch an intrusion at the moment it happens, the camera pipeline has to be running continuously. In a rural deployment on solar or battery, that is a constant draw spent mostly on empty frames.',
+    'The second is noise. An outdoor scene is full of movement that is not an animal: foliage in the wind, shadows shifting through the day, the change between daylight and night, small things crossing the frame. All of it produces detections.',
+    'It would be easy to file false positives under accuracy and move on. In the field they cost more than that. They cause alert fatigue, and once the people receiving the alerts start ignoring them because most turn out to be wrong, the system has stopped doing its job whatever its mAP score says. What it needs is a way to filter noise before the vision model ever sees it, rather than getting better at classifying noise after the fact.',
+  ],
+  approach: [
+    'The system only runs vision when there is a reason to. A PIR sensor picks up a heat and motion signature at almost no power cost and acts as the first-stage trigger. Until it fires, the camera and the GPU stay idle.',
+    'A PIR reading on its own is not enough, because ambient thermal drift and wind will set it off. An ultrasonic sensor (HC-SR04) cross-checks it by confirming something is actually present within a set range. Only when both agree does the pipeline wake the camera and run inference. That staged gating, rather than any change to the model, is what brings the false positive rate down.',
+    'YOLOv8n is the nano variant, chosen for the compute budget of embedded hardware at a remote site. It gives up some capacity for a small memory and latency footprint, which is the right trade when there is no GPU server nearby.',
+    'DeepSORT sits on top of the per-frame detections and gives each animal a persistent identity. Without it, one animal walking through thirty frames reads as thirty separate detections: duplicate alerts, and no way to tell whether it is approaching or leaving. With a stable track ID, the system can reason about direction and dwell time. That is the difference between knowing something was detected and knowing this animal is moving toward the field.',
+  ],
   dataset:
     'A custom dataset of 13,879 images across 14 classes, collected to cover the species and conditions the system needed to distinguish in the field.',
   results:
@@ -73,9 +87,9 @@ export const wildlifeNarrative: CaseStudyNarrative = {
   demo: {
     src: '/wildlife-detection-demo.mp4',
     caption:
-      'Real detection output: a YOLOv8n bounding box with a DeepSORT track identity persisting across frames as the subject moves through the scene. Run on third-party broadcast footage from ABN Digital, not on this project’s own dataset — the channel watermark beside the label is theirs.',
+      'Real detection output: a YOLOv8n bounding box with a DeepSORT track identity persisting across frames as the subject moves through the scene. Run on third-party broadcast footage from ABN Digital, not on this project’s own dataset. The channel watermark beside the label is theirs.',
     shortCaption:
-      'Recorded output — YOLOv8n + DeepSORT, run on third-party broadcast footage',
+      'Recorded output: YOLOv8n + DeepSORT, run on third-party broadcast footage',
     maxWidth: 640,
     aspect: '640 / 234',
   },

@@ -27,7 +27,8 @@ export const profile: Profile = {
       summary: '',
     },
   ],
-  bio: null,
-  availability: null,
+  bio: 'I am an MS CS student at Northeastern. My work sits across computer vision, applied ML and backend engineering, and the spread is deliberate: a model is only useful inside a system that actually runs, so I wanted to understand both halves. That has meant a published paper, a filed patent, and projects running from wildlife detection to network security to a full-stack application platform. These days I get as much out of shipping a backend that holds up in production as I do out of training a model.',
+  availability:
+    'Available for a Spring 2027 co-op and full-time roles starting in 2027. On an F-1 visa, authorized for CPT and OPT.',
   resumeHref: '/jefferson-kingston-resume.pdf',
 }

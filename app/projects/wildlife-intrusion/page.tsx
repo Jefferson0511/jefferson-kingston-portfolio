@@ -26,6 +26,21 @@ function Pending({ children }: { children: React.ReactNode }) {
   )
 }
 
+/** Renders a narrative field's paragraphs, or its pending marker when unwritten. */
+function Prose({ paragraphs, pending }: { paragraphs: string[]; pending: string }) {
+  if (paragraphs.length === 0) return <Pending>{pending}</Pending>
+
+  return (
+    <div className="max-w-2xl space-y-4">
+      {paragraphs.map((paragraph) => (
+        <p key={paragraph} className="leading-relaxed text-ink-muted">
+          {paragraph}
+        </p>
+      ))}
+    </div>
+  )
+}
+
 export default function WildlifeIntrusionCaseStudy() {
   return (
     <>
@@ -86,24 +101,19 @@ export default function WildlifeIntrusionCaseStudy() {
           title="Why vision alone falls short"
           id="cs-problem"
         />
-        {wildlifeNarrative.problem ? (
-          <p className="max-w-2xl leading-relaxed text-ink-muted">{wildlifeNarrative.problem}</p>
-        ) : (
-          <Pending>Pending &mdash; the vision-only failure modes, in Jefferson&rsquo;s words</Pending>
-        )}
+        <Prose
+          paragraphs={wildlifeNarrative.problem}
+          pending="Pending — the vision-only failure modes, in Jefferson's words"
+        />
       </section>
 
       {/* 03 — Approach */}
       <section aria-labelledby="cs-approach" className="mb-20">
         <SectionHeader index="03" label="Approach" title="Why these choices" id="cs-approach" />
-        {wildlifeNarrative.approach ? (
-          <p className="max-w-2xl leading-relaxed text-ink-muted">{wildlifeNarrative.approach}</p>
-        ) : (
-          <Pending>
-            Pending &mdash; why YOLOv8n specifically, what DeepSORT adds, what each sensor
-            contributes
-          </Pending>
-        )}
+        <Prose
+          paragraphs={wildlifeNarrative.approach}
+          pending="Pending — why YOLOv8n specifically, what DeepSORT adds, what each sensor contributes"
+        />
       </section>
 
       {/* 04 — Fusion */}
