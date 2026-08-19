@@ -6,7 +6,7 @@ export const credentials: Credential[] = [
     title:
       'Multimodal Integration of Sensors with Computer Vision to Detect and Alert Wild Animal Intrusion',
     venue:
-      'IEEE Xplore — oral presentation at RAEEUCCI-2026, SRM Institute of Science and Technology, Chennai',
+      'IEEE Xplore: oral presentation at RAEEUCCI-2026, SRM Institute of Science and Technology, Chennai',
     // No DOI supplied. Deliberately null rather than invented.
     identifier: null,
     date: 'Apr 2026',

@@ -25,8 +25,8 @@ export const metadata: Metadata = {
   // Makes every relative URL below resolve absolutely, which Open Graph requires.
   metadataBase: new URL(site.url),
   title: {
-    default: `${profile.name} — ML and Computer Vision`,
-    template: `%s — ${profile.name}`,
+    default: `${profile.name} · ML and Computer Vision`,
+    template: `%s · ${profile.name}`,
   },
   description,
   // Driven by the one launch flag, together with app/robots.ts. See content/site.ts
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   robots: site.launchReady ? { index: true, follow: true } : { index: false, follow: false },
   openGraph: {
     type: 'profile',
-    title: `${profile.name} — ML and Computer Vision`,
+    title: `${profile.name} · ML and Computer Vision`,
     description,
     url: site.url,
     // No `images` entry here on purpose: app/opengraph-image.tsx is a file

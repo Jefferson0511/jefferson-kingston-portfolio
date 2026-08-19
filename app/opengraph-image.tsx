@@ -3,7 +3,7 @@ import { join } from 'node:path'
 import { ImageResponse } from 'next/og'
 import { profile } from '@/content/profile'
 
-export const alt = `${profile.name} — systems that detect, track and interpret signals in real time`
+export const alt = `${profile.name}: systems that detect, track and interpret signals in real time`
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
