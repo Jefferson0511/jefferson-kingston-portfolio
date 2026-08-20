@@ -13,9 +13,11 @@ dist/
 *.tsbuildinfo
 next-env.d.ts
 
-# Environment variables
-.env
-.env*.local
+# Environment variables. Broad on purpose: .env and .env*.local alone would have
+# left .env.development and .env.production tracked. The negation keeps a
+# committed example file possible without weakening the rule.
+.env*
+!.env.example
 
 # Vercel
 .vercel
@@ -43,5 +45,6 @@ Thumbs.db
 .playwright-mcp/
 /*.png
 
-.vercel
-.env*
+# Working documents: the design spec, build plan and verification audit. Kept in
+# the working copy, deliberately not published.
+docs/
