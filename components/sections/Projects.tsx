@@ -1,6 +1,6 @@
 import { SectionHeader } from '@/components/primitives/SectionHeader'
 import { ProjectCard } from '@/components/primitives/ProjectCard'
-import { otherProjects } from '@/content/projects'
+import { otherProjects, unverifiedProjects } from '@/content/projects'
 import { profile } from '@/content/profile'
 
 export function Projects() {
@@ -10,11 +10,9 @@ export function Projects() {
 
       <div className="grid gap-4 sm:grid-cols-2">
         {/*
-         * INTERIM: every card points at the GitHub profile rather than its own
-         * repo, because per-repo URLs are not confirmed public yet. A profile
-         * link cannot 404, which is the failure the brief specifically warns
-         * about. Swap `project.links` in once repoVerified flips true — see the
-         * reminder in project memory.
+         * A verified project links to its own repo. One without a public repo
+         * falls back to the profile, which cannot 404 and claims nothing that
+         * clicking would disprove.
          */}
         {otherProjects.map((project) => (
           <ProjectCard
@@ -25,10 +23,20 @@ export function Projects() {
         ))}
       </div>
 
-      <p className="mt-5 text-[0.8125rem] text-ink-faint">
-        Repository links point to the GitHub profile for now. Per-project repositories are being
-        prepared.
-      </p>
+      {/*
+       * Derived from the data rather than written out, so it cannot drift. The
+       * previous version was a hardcoded sentence saying every link pointed at
+       * the profile, which stopped being true the moment the first real repo
+       * was wired in and would have quietly misdescribed the page.
+       */}
+      {unverifiedProjects.length > 0 && (
+        <p className="mt-5 text-[0.8125rem] text-ink-faint">
+          {unverifiedProjects.map((p) => p.title).join(', ')}{' '}
+          {unverifiedProjects.length === 1 ? 'has' : 'have'} no public repository yet, so{' '}
+          {unverifiedProjects.length === 1 ? 'that card links' : 'those cards link'} to the GitHub
+          profile instead.
+        </p>
+      )}
     </section>
   )
 }

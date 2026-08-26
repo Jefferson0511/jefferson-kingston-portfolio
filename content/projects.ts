@@ -1,5 +1,11 @@
 import type { Project } from './types'
 
+/*
+ * Every repo URL below was verified against its README on 2026-08-26, not just
+ * checked for a 200. A link resolving to a repo that contradicts its own card is
+ * worse than no link at all, because it hands the reader the contradiction
+ * directly. `npm run check-links` covers reachability; the claims are on us.
+ */
 export const projects: Project[] = [
   {
     slug: 'wildlife-intrusion',
@@ -19,24 +25,36 @@ export const projects: Project[] = [
         source: 'Custom dataset, IEEE Xplore, RAEEUCCI-2026',
       },
     ],
-    links: [],
+    links: [
+      {
+        label: 'GitHub',
+        href: 'https://github.com/Jefferson0511/Multimodal-Integration-of-Sensors-with-Computer-Vision-To-Detect-and-Alert-Wild-Animal-Intrusion',
+      },
+    ],
     date: 'Apr 2026',
     image: null,
     featured: true,
-    repoVerified: false,
+    repoVerified: true,
   },
   {
+    /*
+     * This card describes what the code does. The LiDAR speed estimation and
+     * acoustic sensing that used to sit here belong to the filed patent's
+     * broader design, not to this repository, and presenting them as
+     * implemented put a claim on the site that clicking through would
+     * immediately contradict. The patent stands on its own under credentials.
+     */
     slug: 'traffic-management',
-    title: 'Intelligent Traffic Management System',
+    title: 'Adaptive Traffic Signal Control',
     summary:
-      'IoT-based traffic management integrating YOLO object detection, LiDAR speed estimation, and acoustic sensors to prioritize emergency vehicles.',
-    stack: ['YOLO', 'LiDAR', 'Acoustic sensors', 'IoT'],
+      'Replaces fixed-timer signals with a schedule computed from junction camera footage. Counts per-lane vehicle density with YOLOv7-tiny and SORT, detects emergency vehicles for preemption, and drives a physical Arduino signal rig over serial.',
+    stack: ['YOLOv7-tiny', 'SORT', 'Arduino', 'IoT', 'Python'],
     metrics: [],
-    links: [],
+    links: [{ label: 'GitHub', href: 'https://github.com/Jefferson0511/adaptive-traffic-signal' }],
     date: 'Oct 2024',
     image: null,
     featured: false,
-    repoVerified: false,
+    repoVerified: true,
   },
   {
     slug: 'marine-surveillance',
@@ -45,13 +63,21 @@ export const projects: Project[] = [
       'YOLOv10 detection with DeepSORT tracking to identify humans and unusual activity in drone footage over marine environments, focused on detection robustness in challenging conditions.',
     stack: ['YOLOv10', 'DeepSORT', 'Python'],
     metrics: [],
-    links: [],
+    links: [
+      {
+        label: 'GitHub',
+        href: 'https://github.com/Jefferson0511/Accurate-Object-Tracking-Framework-for-Drone-Based-Marine-Surveillance',
+      },
+    ],
     date: 'Nov 2024',
     image: null,
     featured: false,
-    repoVerified: false,
+    repoVerified: true,
   },
   {
+    // No public repository for this one, confirmed by Jefferson. repoVerified
+    // stays false, so ProjectCard falls back to the profile link rather than
+    // rendering a dead href.
     slug: 'ddos-detection',
     title: 'LSTM-Based Distributed DDoS Detection',
     summary:
@@ -67,31 +93,35 @@ export const projects: Project[] = [
     featured: false,
     repoVerified: false,
   },
+  /*
+   * The sign language project was removed at Jefferson's request. The public
+   * repo of that name is a separate VIT course project (MediaPipe Hands and a
+   * Random Forest over 15 ASL letters), not the NUS work this card described,
+   * so linking it would have pointed at different work while the card claimed
+   * MediaPipe Holistic, an LSTM and quantization.
+   *
+   * Note the NUS entry in content/experience.ts still describes that pipeline.
+   * It has no public repo behind it, which is fine for an employment bullet in
+   * a way it is not for a project card.
+   */
   {
-    slug: 'sign-language',
-    title: 'Real-Time Sign Language Interpretation',
-    summary:
-      'MediaPipe Holistic landmark extraction with OpenCV preprocessing and LSTM classification, optimized for latency through batching and quantization and deployed as a full browser-based inference pipeline.',
-    stack: ['MediaPipe', 'OpenCV', 'LSTM', 'Quantization'],
-    metrics: [],
-    links: [],
-    date: 'Dec 2023 – Jan 2024',
-    image: null,
-    featured: false,
-    repoVerified: false,
-  },
-  {
+    /*
+     * Named for what the repo contains rather than the vaguer "full-stack
+     * platform". A NestJS service with validated DTOs, an entity and spec files
+     * is the backend evidence the ML work does not provide, and being specific
+     * is what makes it useful to a backend reviewer.
+     */
     slug: 'job-platform',
     title: 'Job Application Platform',
     summary:
-      'Full-stack application tracking platform. This is the production deployment evidence that the ML projects alone do not demonstrate.',
-    stack: ['Next.js', 'Node.js', 'PostgreSQL', 'Vercel', 'Railway'],
+      'Next.js and Mantine admin front end over a NestJS REST service, with TypeORM against PostgreSQL. Validated DTOs for create, update and filter, a Job entity carrying draft state, and unit plus e2e test scaffolding.',
+    stack: ['Next.js', 'NestJS', 'TypeORM', 'PostgreSQL', 'TypeScript'],
     metrics: [],
-    links: [],
+    links: [{ label: 'GitHub', href: 'https://github.com/Jefferson0511/job-application-website' }],
     date: '2025',
     image: null,
     featured: false,
-    repoVerified: false,
+    repoVerified: true,
   },
 ]
 
@@ -107,3 +137,9 @@ export const featuredProject: Project = featured
 
 /** Everything except the flagship, for the "Other projects" section. */
 export const otherProjects: Project[] = projects.filter((p) => !p.featured)
+
+/**
+ * Projects with no confirmed public repo. Drives the caveat note, so the note
+ * cannot drift out of step with the data the way a hardcoded sentence would.
+ */
+export const unverifiedProjects: Project[] = projects.filter((p) => !p.repoVerified)
