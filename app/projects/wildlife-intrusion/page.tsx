@@ -7,6 +7,7 @@ import { MetricStrip } from '@/components/primitives/MetricStrip'
 import { EvidenceChip } from '@/components/primitives/EvidenceChip'
 import { ChannelDiagram } from '@/components/primitives/ChannelDiagram'
 import { PublicationSchema } from '@/components/primitives/StructuredData'
+import { Icon } from '@/components/primitives/Icon'
 import { featuredProject } from '@/content/projects'
 import { credentials } from '@/content/credentials'
 import { wildlifeNarrative } from '@/content/caseStudy'
@@ -17,6 +18,7 @@ export const metadata: Metadata = {
 }
 
 const publication = credentials.find((c) => c.kind === 'publication')
+const repo = featuredProject.links[0]
 
 function Pending({ children }: { children: React.ReactNode }) {
   return (
@@ -68,6 +70,21 @@ export default function WildlifeIntrusionCaseStudy() {
             <EvidenceChip key={tech}>{tech}</EvidenceChip>
           ))}
         </div>
+
+        {/* Someone this far into the page is the most likely person on the site
+            to want the code, so it should not require going back to find it. */}
+        {featuredProject.repoVerified && repo && (
+          <a
+            href={repo.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-5 inline-flex items-center gap-2 rounded-sm border border-line-strong px-4 py-2 font-mono text-xs uppercase tracking-[0.1em] text-ink transition-colors hover:border-detect hover:text-detect"
+          >
+            <Icon name="github" size={14} />
+            Source
+            <span className="sr-only"> (opens in a new tab)</span>
+          </a>
+        )}
         <div className="mt-8">
           {/*
            * The real footage is the strongest evidence on this page, so it opens
