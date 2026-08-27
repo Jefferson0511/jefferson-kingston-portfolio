@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import type { Project } from '@/content/types'
+import type { Project, ProjectCategory } from '@/content/types'
 import { EvidenceChip } from './EvidenceChip'
 import { MetricStrip } from './MetricStrip'
 
@@ -11,6 +11,21 @@ type Props = {
    * ring, not in the tab order.
    */
   href?: string
+  /** Position in the grid, rendered as the oversized ghost numeral. 1-indexed. */
+  index?: number
+}
+
+/*
+ * A typed Record, so adding a ProjectCategory without a colour is a compile
+ * error rather than an unstyled badge. Every value is above 4.5:1 on the card
+ * background, because the badge label has to be readable as text and not merely
+ * distinguishable as a hue — colour is never the only signal.
+ */
+const CATEGORY: Record<ProjectCategory, { label: string; className: string }> = {
+  vision: { label: 'Computer vision', className: 'border-cat-vision/40 text-cat-vision' },
+  backend: { label: 'Backend', className: 'border-cat-backend/40 text-cat-backend' },
+  security: { label: 'Security / ML', className: 'border-cat-security/40 text-cat-security' },
+  research: { label: 'Research', className: 'border-cat-research/40 text-cat-research' },
 }
 
 // Offset by a pixel so the ticks sit on the border rather than inside it.
@@ -21,9 +36,10 @@ const CORNERS = [
   '-bottom-px -right-px border-b border-r',
 ]
 
-export function ProjectCard({ project, href }: Props) {
+export function ProjectCard({ project, href, index }: Props) {
   const interactive = href !== undefined
   const external = href?.startsWith('http') ?? false
+  const category = CATEGORY[project.category]
 
   const body = (
     <>
@@ -46,12 +62,32 @@ export function ProjectCard({ project, href }: Props) {
         />
       ))}
 
-      <div className="flex items-baseline justify-between gap-3">
-        <h3 className="text-[1.0625rem] font-semibold text-ink">{project.title}</h3>
-        <span className="num shrink-0 text-[0.6875rem] text-ink-faint">{project.date}</span>
+      {/*
+       * Oversized ghost numeral. Decorative, so aria-hidden and out of the
+       * accessibility tree: the card already has a heading and a date, and a
+       * screen reader announcing "zero four" before the title would be noise.
+       */}
+      {index !== undefined && (
+        <span
+          aria-hidden="true"
+          className="display pointer-events-none absolute right-4 top-1 select-none text-[5rem] leading-none text-ink/[0.045]"
+        >
+          {String(index).padStart(2, '0')}
+        </span>
+      )}
+
+      <div className="relative flex flex-wrap items-center gap-2">
+        <span
+          className={`rounded-sm border px-2 py-1 font-mono text-[0.5625rem] uppercase tracking-[0.12em] ${category.className}`}
+        >
+          {category.label}
+        </span>
+        <span className="num text-[0.6875rem] text-ink-faint">{project.date}</span>
       </div>
 
-      <p className="mt-2 text-sm leading-relaxed text-ink-muted">{project.summary}</p>
+      <h3 className="display relative mt-3 text-2xl text-ink">{project.title}</h3>
+
+      <p className="relative mt-2.5 text-sm leading-relaxed text-ink-muted">{project.summary}</p>
 
       {project.metrics.length > 0 && (
         <div className="mt-4">
@@ -67,7 +103,7 @@ export function ProjectCard({ project, href }: Props) {
     </>
   )
 
-  const base = 'relative rounded-sm border border-line-strong p-4'
+  const base = 'relative overflow-hidden rounded-sm border border-line bg-surface-raised p-5'
   const active =
     'group block transition-[border-color,background-color,transform] duration-300 hover:-translate-y-0.5 hover:border-detect hover:bg-surface-raised focus-visible:border-detect'
 

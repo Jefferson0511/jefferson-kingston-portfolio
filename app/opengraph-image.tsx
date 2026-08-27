@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs'
+﻿import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { ImageResponse } from 'next/og'
 import { profile } from '@/content/profile'
@@ -12,7 +12,7 @@ export const contentType = 'image/png'
  *
  * That footage carries a broadcaster's watermark, and an Open Graph image is
  * reproduced in every LinkedIn post, Slack unfurl and message preview that ever
- * links here — the one place a borrowed watermark would travel furthest and be
+ * links here, the one place a borrowed watermark would travel furthest and be
  * least explicable. The captions on the site can attribute the source; a 1200px
  * card in someone's feed cannot.
  *
@@ -20,12 +20,12 @@ export const contentType = 'image/png'
  * satori, which never sees the stylesheet and so cannot resolve a CSS custom
  * property. They must be kept in step with app/globals.css by hand.
  */
-const INK = '#e6edf4'
-const INK_MUTED = '#93a6b8'
-const INK_FAINT = '#7d92a8'
-const SURFACE = '#1a2430'
-const DETECT = '#4fd8e4'
-const LINE_STRONG = '#607890'
+const INK = '#f2f5f7'
+const INK_MUTED = '#9aa7b4'
+const INK_FAINT = '#7d8b99'
+const SURFACE = '#0a0c0f'
+const DETECT = '#2df5d4'
+const LINE_STRONG = '#5a6a7a'
 
 /*
  * Inter is loaded from a committed file rather than left to satori's bundled
@@ -33,10 +33,11 @@ const LINE_STRONG = '#607890'
  *
  * These are .woff on purpose: satori reads ttf, otf and woff but not woff2, so
  * the faces next/font already self-hosts for the site are unusable here. Read at
- * build time only — this route prerenders to a PNG, so neither file is ever sent
+ * build time only. This route prerenders to a PNG, so neither file is ever sent
  * to a browser.
  */
 const fonts = [
+  { name: 'Anton', weight: 400 as const, style: 'normal' as const, data: readFileSync(join(process.cwd(), 'app/fonts/anton-latin-400-normal.woff')) },
   { name: 'Inter', weight: 400 as const, style: 'normal' as const, data: readFileSync(join(process.cwd(), 'app/fonts/inter-latin-400-normal.woff')) },
   { name: 'Inter', weight: 600 as const, style: 'normal' as const, data: readFileSync(join(process.cwd(), 'app/fonts/inter-latin-600-normal.woff')) },
 ]
@@ -71,13 +72,16 @@ export default function Image() {
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column' }}>
+          {/* Anton and uppercase, matching the hero. A social card that does not
+              look like the page it links to wastes the recognition. */}
           <div
             style={{
               display: 'flex',
-              fontSize: 82,
-              fontWeight: 600,
-              letterSpacing: -2,
-              lineHeight: 1.05,
+              fontFamily: 'Anton',
+              fontSize: 104,
+              letterSpacing: -1,
+              lineHeight: 0.88,
+              textTransform: 'uppercase',
               color: INK,
             }}
           >
@@ -132,3 +136,4 @@ export default function Image() {
     { ...size, fonts },
   )
 }
+

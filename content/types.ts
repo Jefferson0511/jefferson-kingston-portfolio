@@ -34,9 +34,18 @@ export type ExternalLink = {
   href: string
 }
 
+/**
+ * Domain a project belongs to. Drives the badge colour on ProjectCard, so a
+ * reader can scan the grid by area rather than reading every summary. A union
+ * rather than a free string, because the colour map is a typed Record and an
+ * unhandled category should be a compile error.
+ */
+export type ProjectCategory = 'vision' | 'backend' | 'security' | 'research'
+
 export type Project = {
   slug: string
   title: string
+  category: ProjectCategory
   summary: string
   stack: string[]
   metrics: Metric[]

@@ -23,9 +23,12 @@ export function MetricStrip({ metrics, showSource = false }: Props) {
           <dt className="order-2 mt-0.5 font-mono text-[0.5rem] uppercase tracking-[0.13em] text-ink-faint">
             {metric.label}
           </dt>
-          <dd className="num order-1 text-[1.75rem] font-semibold leading-tight text-detect">
-            {metric.value}
-          </dd>
+          {/*
+           * Display face rather than .num here. The mono tabular treatment is
+           * right for inline figures in prose, but at this size Anton is what
+           * makes a metric read as a headline rather than as a data point.
+           */}
+          <dd className="display order-1 text-[2.5rem] leading-none text-detect">{metric.value}</dd>
           {showSource && (
             <dd className="order-3 mt-1 max-w-[22ch] text-[0.6875rem] leading-snug text-ink-faint">
               {metric.source}

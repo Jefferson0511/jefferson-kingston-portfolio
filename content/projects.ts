@@ -1,4 +1,4 @@
-import type { Project } from './types'
+﻿import type { Project } from './types'
 
 /*
  * Every repo URL below was verified against its README on 2026-08-26, not just
@@ -9,6 +9,7 @@ import type { Project } from './types'
 export const projects: Project[] = [
   {
     slug: 'wildlife-intrusion',
+    category: 'vision',
     title: 'Wildlife Intrusion Detection System',
     summary:
       'Real-time system fusing YOLOv8n object detection, DeepSORT multi-object tracking, and PIR/ultrasonic sensors to detect and alert on wild animal intrusion.',
@@ -45,6 +46,7 @@ export const projects: Project[] = [
      * immediately contradict. The patent stands on its own under credentials.
      */
     slug: 'traffic-management',
+    category: 'vision',
     title: 'Adaptive Traffic Signal Control',
     summary:
       'Replaces fixed-timer signals with a schedule computed from junction camera footage. Counts per-lane vehicle density with YOLOv7-tiny and SORT, detects emergency vehicles for preemption, and drives a physical Arduino signal rig over serial.',
@@ -58,6 +60,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'marine-surveillance',
+    category: 'vision',
     title: 'Aerial Marine Surveillance',
     summary:
       'YOLOv10 detection with DeepSORT tracking to identify humans and unusual activity in drone footage over marine environments, focused on detection robustness in challenging conditions.',
@@ -79,6 +82,7 @@ export const projects: Project[] = [
     // stays false, so ProjectCard falls back to the profile link rather than
     // rendering a dead href.
     slug: 'ddos-detection',
+    category: 'security',
     title: 'LSTM-Based Distributed DDoS Detection',
     summary:
       'LSTM model over multi-source network telemetry, using online learning with incremental streaming ingestion and gradient updates to reduce model drift without full retraining.',
@@ -112,6 +116,7 @@ export const projects: Project[] = [
      * is what makes it useful to a backend reviewer.
      */
     slug: 'job-platform',
+    category: 'backend',
     title: 'Job Application Platform',
     summary:
       'Next.js and Mantine admin front end over a NestJS REST service, with TypeORM against PostgreSQL. Validated DTOs for create, update and filter, a Job entity carrying draft state, and unit plus e2e test scaffolding.',
@@ -143,3 +148,5 @@ export const otherProjects: Project[] = projects.filter((p) => !p.featured)
  * cannot drift out of step with the data the way a hardcoded sentence would.
  */
 export const unverifiedProjects: Project[] = projects.filter((p) => !p.repoVerified)
+
+
