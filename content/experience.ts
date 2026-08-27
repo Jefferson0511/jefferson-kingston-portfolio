@@ -15,6 +15,8 @@ export const experience: Role[] = [
     title: 'Data Analyst Intern',
     period: 'Oct – Nov 2023',
     summary:
-      'Data collection, preprocessing and feature engineering for ML pipelines targeting defect detection. Built baseline computer vision models for automated inspection.',
+      // The computer vision claim that used to end this entry was removed on
+      // 2026-08-27: Jefferson confirmed this role did not involve CV work.
+      'Data collection, preprocessing and feature engineering for ML pipelines targeting defect detection.',
   },
 ]

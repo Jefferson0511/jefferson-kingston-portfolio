@@ -11,14 +11,22 @@
    * vocabulary is off-limits: stat-panel rows, per-category badge colours,
    * ghost numerals behind cards, drifting blur blobs.
    */
-  --color-paper: #faf9f6;
+  /*
+   * Warmed from #faf9f6 on 2026-08-27: that was barely off-white and Jefferson
+   * wanted it read as beige. Every token below was re-solved afterwards, because
+   * darkening the background lowers every ratio measured against it. ink-faint
+   * and edge both dropped below their thresholds at the old opacities.
+   */
+  --color-paper: #f3eee1;
   /* Figure wells only. There are no filled cards: the spec replaces boxes and
      shadows with hairlines, so this is used sparingly. */
-  --color-paper-raised: #f2f0ea;
+  --color-paper-raised: #e8e4d9;
 
-  --color-ink: #1f2937;        /* 13.9:1 */
-  --color-ink-muted: #616770;  /*  5.4:1 — ink at 70% over paper */
-  --color-ink-faint: #6c727a;  /*  4.6:1 — ink at 65%, the floor for body text */
+  --color-ink: #1f2937;        /* 12.7:1 */
+  --color-ink-muted: #495059;  /*  7.0:1 on paper, 6.4:1 on the figure well */
+  /* Paper only. It clears 4.6:1 there and would not on the well, so captions
+     inside a figure use ink-muted instead. */
+  --color-ink-faint: #676c71;  /*  4.6:1 */
 
   /*
    * Interactive only, per the spec: circular toggles, filled buttons, hover
@@ -34,8 +42,8 @@
    * 1.4.11 requires for the boundary of an interactive control. The spec also
    * asks for thin-bordered interactive pills, so one value cannot serve both.
    */
-  --color-rule: #cecfd0;       /*  1.5:1 — DECORATIVE RULES ONLY */
-  --color-edge: #8d9197;       /*  3.0:1 — interactive boundaries */
+  --color-rule: #c9c7bf;       /*  1.5:1 — DECORATIVE RULES ONLY */
+  --color-edge: #7e8284;       /*  3.4:1 on paper, 3.1:1 on the figure well */
 
   --font-display: var(--font-playfair), Georgia, serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;

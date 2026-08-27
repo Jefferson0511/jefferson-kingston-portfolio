@@ -30,8 +30,13 @@ const plexMono = IBM_Plex_Mono({
   variable: '--font-plex-mono',
 })
 
-const description =
-  'MS Computer Science at Northeastern. I build systems that detect, track and interpret signals in real time, including an IEEE-published wildlife intrusion detection system.'
+/*
+ * Composed from content rather than written out. The hardcoded version still
+ * contained the old thesis after it had been rewritten, which is exactly the
+ * drift this avoids: search results and link previews were describing the site
+ * in words that no longer appeared on it.
+ */
+const description = `MS Computer Science at Northeastern. ${profile.thesis} IEEE-published wildlife intrusion detection.`
 
 export const metadata: Metadata = {
   // Makes every relative URL below resolve absolutely, which Open Graph requires.

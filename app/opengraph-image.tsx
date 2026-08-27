@@ -3,7 +3,9 @@ import { join } from 'node:path'
 import { ImageResponse } from 'next/og'
 import { profile } from '@/content/profile'
 
-export const alt = `${profile.name}: systems that detect, track and interpret signals in real time`
+// Derived from content rather than restated, so it cannot drift from the thesis
+// the card actually renders. It had already drifted once.
+export const alt = `${profile.name}. ${profile.thesis}`
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
@@ -18,13 +20,13 @@ export const contentType = 'image/png'
  * which never sees the stylesheet and cannot resolve a custom property. Keep
  * them in step with app/globals.css by hand.
  */
-const PAPER = '#faf9f6'
+const PAPER = '#f3eee1'
 const INK = '#1f2937'
-const MUTED = '#616770'
-const FAINT = '#6c727a'
+const MUTED = '#495059'
+const FAINT = '#676c71'
 const BURGUNDY = '#4a0e17'
-const RULE = '#cecfd0'
-const EDGE = '#8d9197'
+const RULE = '#c9c7bf'
+const EDGE = '#7e8284'
 
 /*
  * Playfair and Inter are read from committed .woff files. Satori reads ttf, otf
@@ -97,7 +99,7 @@ export default function Image() {
 
           <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
             <div style={{ display: 'flex', fontSize: 33, lineHeight: 1.35, color: INK, maxWidth: 720 }}>
-              {profile.thesis.replace(/\.$/, '')} —
+              {profile.thesis}
             </div>
             <div style={{ display: 'flex', gap: 12, marginTop: 26 }}>
               <div

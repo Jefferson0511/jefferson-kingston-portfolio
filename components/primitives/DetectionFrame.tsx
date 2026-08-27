@@ -63,7 +63,9 @@ export function DetectionFrame({
         </>
       ) : (
         <div className="absolute inset-0 flex items-center justify-center">
-          <p className="font-mono text-[0.625rem] uppercase tracking-[0.13em] text-ink-faint">
+          {/* ink-muted, not ink-faint: this label sits on the figure well, where
+              ink-faint measures 4.3:1 and misses the 4.5:1 floor. */}
+          <p className="label text-ink-muted">
             {pendingLabel}
           </p>
         </div>

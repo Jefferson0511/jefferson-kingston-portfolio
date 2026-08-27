@@ -41,7 +41,9 @@ export function Hero() {
       <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,16rem)_minmax(0,1fr)] lg:gap-14">
         <div className="enter" style={delay(140)}>
           <p className="label font-semibold text-ink">ML / Computer vision</p>
-          <p className="mt-1.5 text-sm text-ink-faint">selected work &mdash;</p>
+          {/* No trailing em dash. The reference uses one, but Jefferson has
+              flagged em dashes twice as reading as machine-written. */}
+          <p className="mt-1.5 text-sm text-ink-faint">Selected work</p>
 
           <div className="mt-5 flex flex-wrap gap-1.5">
             <Pill>Computer vision</Pill>
@@ -79,7 +81,9 @@ export function Hero() {
             className="enter max-w-2xl text-2xl leading-[1.4] text-ink sm:text-[1.75rem]"
             style={delay(200)}
           >
-            {profile.thesis.replace(/\.$/, '')} &mdash;
+            {/* Rendered verbatim. The trailing em dash that used to be appended
+                here was part of what read as affected. */}
+            {profile.thesis}
           </p>
 
           {/* Small mono block against the large serif above it. The extreme

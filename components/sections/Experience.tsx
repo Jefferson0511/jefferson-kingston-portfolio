@@ -10,8 +10,13 @@ export function Experience() {
         label="Experience"
         title="Where I have worked"
         id="experience-heading"
-        intro="Two internships, both hands-on with computer vision pipelines rather than adjacent to them."
       />
+      {/*
+       * No intro line here. The one that used to sit here was written by me, not
+       * by Jefferson, and it asserted that both internships were hands-on
+       * computer vision work, which was not true of the AAM role. Section
+       * intros must come from content, never be composed to fill the slot.
+       */}
 
       {/*
        * An accordion rather than a flat list. The organisation and role stay
