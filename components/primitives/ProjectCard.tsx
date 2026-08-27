@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import type { Project, ProjectCategory } from '@/content/types'
-import { EvidenceChip } from './EvidenceChip'
-import { MetricStrip } from './MetricStrip'
+import { Pill } from './Pill'
 
 type Props = {
   project: Project
@@ -11,101 +10,72 @@ type Props = {
    * ring, not in the tab order.
    */
   href?: string
-  /** Position in the grid, rendered as the oversized ghost numeral. 1-indexed. */
-  index?: number
 }
 
 /*
- * A typed Record, so adding a ProjectCategory without a colour is a compile
- * error rather than an unstyled badge. Every value is above 4.5:1 on the card
- * background, because the badge label has to be readable as text and not merely
- * distinguishable as a hue — colour is never the only signal.
+ * Labels only. The previous version mapped each category to its own colour,
+ * which was lifted from the benchmark site and also contradicts the rule that
+ * burgundy is reserved for interactive elements. Every pill is now identical
+ * until hovered, and the category is conveyed by its text.
  */
-const CATEGORY: Record<ProjectCategory, { label: string; className: string }> = {
-  vision: { label: 'Computer vision', className: 'border-cat-vision/40 text-cat-vision' },
-  backend: { label: 'Backend', className: 'border-cat-backend/40 text-cat-backend' },
-  security: { label: 'Security / ML', className: 'border-cat-security/40 text-cat-security' },
-  research: { label: 'Research', className: 'border-cat-research/40 text-cat-research' },
+const CATEGORY_LABEL: Record<ProjectCategory, string> = {
+  vision: 'Computer vision',
+  backend: 'Backend',
+  security: 'Security / ML',
+  research: 'Research',
 }
 
-// Offset by a pixel so the ticks sit on the border rather than inside it.
-const CORNERS = [
-  '-left-px -top-px border-l border-t',
-  '-right-px -top-px border-r border-t',
-  '-bottom-px -left-px border-b border-l',
-  '-bottom-px -right-px border-b border-r',
-]
-
-export function ProjectCard({ project, href, index }: Props) {
+export function ProjectCard({ project, href }: Props) {
   const interactive = href !== undefined
   const external = href?.startsWith('http') ?? false
-  const category = CATEGORY[project.category]
 
   const body = (
     <>
       {/*
-       * The corner ticks mirror DetectionFrame, and on an interactive card they
-       * are the hover state: pointing at one extends all four corners inward,
-       * so the card visibly locks on. That is the site's one interaction idea,
-       * reused rather than joined by a second — the brief asked for a single
-       * memorable element instead of five flourishes.
+       * No corner ticks and no oversized ghost numeral. Both belonged to the
+       * previous design and both came from the site this was benchmarked
+       * against. A plate is framed by its rule, and nothing else.
        */}
-      {CORNERS.map((corner) => (
-        <span
-          key={corner}
-          aria-hidden="true"
-          className={`pointer-events-none absolute h-1.5 w-1.5 transition-all duration-300 ${corner} ${
-            interactive
-              ? 'border-detect/50 group-hover:h-3.5 group-hover:w-3.5 group-hover:border-detect group-focus-visible:h-3.5 group-focus-visible:w-3.5 group-focus-visible:border-detect'
-              : 'border-line-strong'
-          }`}
-        />
-      ))}
-
-      {/*
-       * Oversized ghost numeral. Decorative, so aria-hidden and out of the
-       * accessibility tree: the card already has a heading and a date, and a
-       * screen reader announcing "zero four" before the title would be noise.
-       */}
-      {index !== undefined && (
-        <span
-          aria-hidden="true"
-          className="display pointer-events-none absolute right-4 top-1 select-none text-[5rem] leading-none text-ink/[0.045]"
-        >
-          {String(index).padStart(2, '0')}
-        </span>
-      )}
-
-      <div className="relative flex flex-wrap items-center gap-2">
-        <span
-          className={`rounded-sm border px-2 py-1 font-mono text-[0.5625rem] uppercase tracking-[0.12em] ${category.className}`}
-        >
-          {category.label}
-        </span>
-        <span className="num text-[0.6875rem] text-ink-faint">{project.date}</span>
+      <div className="flex items-start justify-between gap-4">
+        <h3 className="display text-[1.75rem] text-ink transition-colors duration-300 group-hover:text-burgundy">
+          {project.title}
+        </h3>
+        <span className="num mt-1.5 shrink-0 text-[0.6875rem] text-ink-faint">{project.date}</span>
       </div>
 
-      <h3 className="display relative mt-3 text-2xl text-ink">{project.title}</h3>
+      <p className="mt-3 max-w-xl text-[0.9375rem] leading-relaxed text-ink-muted">
+        {project.summary}
+      </p>
 
-      <p className="relative mt-2.5 text-sm leading-relaxed text-ink-muted">{project.summary}</p>
-
+      {/* Figures inline as small serif numerals, not a nested strip of panels. */}
       {project.metrics.length > 0 && (
-        <div className="mt-4">
-          <MetricStrip metrics={project.metrics} />
-        </div>
+        <dl className="mt-5 flex flex-wrap gap-x-8 gap-y-3">
+          {project.metrics.map((metric) => (
+            <div key={metric.label} className="flex flex-col">
+              <dt className="label order-2 mt-1 text-ink-faint">{metric.label}</dt>
+              <dd className="display order-1 text-2xl text-burgundy">{metric.value}</dd>
+            </div>
+          ))}
+        </dl>
       )}
 
-      <div className="mt-4 flex flex-wrap gap-1.5">
+      <div className="mt-5 flex flex-wrap gap-1.5">
+        <Pill interactive={interactive}>{CATEGORY_LABEL[project.category]}</Pill>
         {project.stack.map((tech) => (
-          <EvidenceChip key={tech}>{tech}</EvidenceChip>
+          <Pill key={tech}>{tech}</Pill>
         ))}
       </div>
     </>
   )
 
-  const base = 'relative overflow-hidden rounded-sm border border-line bg-surface-raised p-5'
+  const base = 'relative block border border-rule p-6'
+  /*
+   * scale-[1.02] and a border colour shift, per the spec. `transform` is on the
+   * transition list explicitly rather than using `transition-all`, which would
+   * also animate layout properties and cost more than it gives.
+   */
   const active =
-    'group block transition-[border-color,background-color,transform] duration-300 hover:-translate-y-0.5 hover:border-detect hover:bg-surface-raised focus-visible:border-detect'
+    'group transition-[border-color,transform] duration-300 hover:scale-[1.02] hover:border-burgundy focus-visible:border-burgundy'
 
   /*
    * The interactive/inert split is a correctness decision, not styling. A hover

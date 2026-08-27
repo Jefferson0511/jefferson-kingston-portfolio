@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Anton, Inter, IBM_Plex_Mono } from 'next/font/google'
+import { Playfair_Display, Inter, IBM_Plex_Mono } from 'next/font/google'
 import { SkipLink } from '@/components/primitives/SkipLink'
 import { SiteHeader } from '@/components/primitives/SiteHeader'
 import { profile } from '@/content/profile'
@@ -7,12 +7,16 @@ import { site } from '@/content/site'
 import './globals.css'
 
 /*
- * Anton ships a single weight, which is the point: it is a display face for
- * large sizes only, never body copy. Chosen over Bebas Neue deliberately, since
- * Bebas is what the site this was benchmarked against uses and the result would
- * have read as a copy. Anton is heavier and blunter, which suits the subject.
+ * Only weight 900 is loaded. Playfair is used exclusively at display sizes,
+ * where its stroke contrast is the whole reason to choose it, and a lighter
+ * weight would only invite it into body copy where Inter belongs.
  */
-const anton = Anton({ subsets: ['latin'], weight: '400', display: 'swap', variable: '--font-anton' })
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['900'],
+  display: 'swap',
+  variable: '--font-playfair',
+})
 
 const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' })
 
@@ -54,44 +58,26 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${anton.variable} ${inter.variable} ${plexMono.variable}`}>
-      <body className="relative bg-surface text-ink antialiased">
-        {/*
-         * Ambient background wash, fixed and behind everything. Decorative only:
-         * aria-hidden, pointer-events-none, and low enough opacity that no text
-         * contrast ratio measured against --color-surface is affected.
-         */}
-        <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-          <div
-            className="blob absolute -right-40 -top-40 h-[38rem] w-[38rem] rounded-full bg-detect/[0.045] blur-[140px]"
-            style={{ '--blob-duration': '18s' } as React.CSSProperties}
-          />
-          <div
-            className="blob absolute -bottom-40 -left-40 h-[30rem] w-[30rem] rounded-full bg-cat-backend/[0.04] blur-[140px]"
-            style={{ '--blob-duration': '24s' } as React.CSSProperties}
-          />
-        </div>
-
+    <html lang="en" className={`${playfair.variable} ${inter.variable} ${plexMono.variable}`}>
+      {/* The paper grain lives on body::before in globals.css rather than in a
+          wrapper element here, so nothing in the markup exists purely to hold a
+          texture. The drifting blur blobs are gone: they were lifted from the
+          benchmark site. */}
+      <body className="bg-paper text-ink antialiased">
         <SkipLink />
         {/* Sticky, so the resume and contact details never scroll out of reach. */}
         <SiteHeader />
-        {/*
-         * The layout owns the single main landmark. No page declares its own.
-         * Widened from max-w-4xl: 132px display type cannot share an 832px row
-         * with a second column, and the extra width is what lets the hero name
-         * and the detection clip sit side by side.
-         */}
-        <main id="content" className="mx-auto max-w-6xl px-5 py-14 sm:px-8 lg:px-12">
+        {/* The layout owns the single main landmark. No page declares its own.
+            Wide, because the display type and the two-column split need room. */}
+        <main id="content" className="mx-auto max-w-6xl px-5 py-12 sm:px-8 lg:px-14">
           {children}
         </main>
-        <footer className="mx-auto max-w-6xl px-5 pb-12 sm:px-8 lg:px-12">
-          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line pt-6">
-            <p className="font-mono text-[0.625rem] uppercase tracking-[0.13em] text-ink-faint">
-              {profile.name}
-            </p>
+        <footer className="mx-auto max-w-6xl px-5 pb-14 sm:px-8 lg:px-14">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-rule pt-7">
+            <p className="label text-ink-faint">{profile.name}</p>
             <a
               href="#content"
-              className="inline-block py-1 font-mono text-[0.625rem] uppercase tracking-[0.13em] text-ink-faint transition-colors hover:text-detect"
+              className="label inline-block py-1 text-ink-faint transition-colors hover:text-burgundy"
             >
               Back to top &uarr;
             </a>

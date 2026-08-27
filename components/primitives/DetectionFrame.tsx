@@ -21,7 +21,7 @@ export function DetectionFrame({
 }: Props) {
   return (
     <div
-      className="relative overflow-hidden rounded-sm bg-surface-sunken"
+      className="relative overflow-hidden bg-paper-raised"
       style={{ aspectRatio: ratio }}
     >
       {/* Corner ticks — the frame reads as an annotation viewport even when empty. */}
@@ -49,7 +49,7 @@ export function DetectionFrame({
           {image.boxes.map((box) => (
             <span
               key={box.label}
-              className={`absolute border ${box.kind === 'detect' ? 'border-detect' : 'border-alert'}`}
+              className={`absolute border ${box.kind === 'detect' ? 'border-burgundy' : 'border-burgundy'}`}
               style={{
                 left: `${box.x}%`,
                 top: `${box.y}%`,

@@ -9,14 +9,14 @@ type Props = {
 // A typed Record, so adding a Channel kind without a fill is a compile error.
 // Note these are only existing tokens — no third colour enters the system.
 const FILLS: Record<Channel['kind'], string> = {
-  detect: 'bg-detect',
-  alert: 'bg-alert',
+  detect: 'bg-burgundy',
+  alert: 'bg-burgundy',
   neutral: 'bg-ink-muted',
 }
 
 export function ChannelDiagram({ channels, fusedLabel }: Props) {
   return (
-    <figure className="rounded-sm border border-line p-5">
+    <figure className="border border-rule p-5">
       <figcaption className="mb-4 font-mono text-[0.625rem] uppercase tracking-[0.13em] text-ink-faint">
         Sensor channels resolving into one decision
       </figcaption>
@@ -27,7 +27,7 @@ export function ChannelDiagram({ channels, fusedLabel }: Props) {
             <span className="text-right font-mono text-[0.5625rem] uppercase tracking-[0.11em] text-ink-faint">
               {channel.name}
             </span>
-            <span className="relative block h-3.5 overflow-hidden rounded-sm bg-surface-raised">
+            <span className="relative block h-3.5 overflow-hidden bg-paper-raised">
               {/*
                * bar-grow ties the fill to a scroll timeline, so the bars sweep
                * out as the diagram enters view and the chart reads as a
@@ -48,8 +48,8 @@ export function ChannelDiagram({ channels, fusedLabel }: Props) {
           <span className="text-right font-mono text-[0.5625rem] uppercase tracking-[0.11em] text-ink">
             Fused
           </span>
-          <span className="relative flex h-5 items-center justify-end rounded-sm bg-ink px-2">
-            <span className="num text-[0.5625rem] uppercase tracking-[0.05em] text-surface">
+          <span className="relative flex h-5 items-center justify-end bg-ink px-2">
+            <span className="num text-[0.5625rem] uppercase tracking-[0.05em] text-paper">
               {fusedLabel}
             </span>
           </span>

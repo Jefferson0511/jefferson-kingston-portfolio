@@ -18,9 +18,11 @@ type Props = {
    * fullscreen — for the case study, where the job is to be examined.
    */
   mode: 'ambient' | 'inspect'
+  /** Plate label, e.g. "Fig. 01". Omit and the caption runs without one. */
+  plate?: string
 }
 
-export function DetectionClip({ src, caption, maxWidth, aspect, mode }: Props) {
+export function DetectionClip({ src, caption, maxWidth, aspect, mode, plate }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null)
   // Tracks a deliberate pause so scrolling away and back does not restart
   // footage the visitor chose to stop.
@@ -91,14 +93,14 @@ export function DetectionClip({ src, caption, maxWidth, aspect, mode }: Props) {
     return (
       <figure className="w-full" style={{ maxWidth: `${maxWidth}px` }}>
         <div
-          className="flex items-center justify-center rounded-sm border border-dashed border-alert bg-surface-sunken p-5"
+          className="flex items-center justify-center border border-dashed border-burgundy bg-paper-raised p-5"
           style={{ aspectRatio: aspect }}
         >
-          <p className="max-w-[34ch] text-center font-mono text-[0.6875rem] uppercase leading-relaxed tracking-[0.1em] text-alert">
+          <p className="label max-w-[34ch] text-center leading-relaxed text-burgundy">
             This clip could not be decoded in your browser
           </p>
         </div>
-        <figcaption className="mt-2.5 text-[0.8125rem] leading-relaxed text-ink-faint">
+        <figcaption className="mt-3 text-[0.8125rem] leading-relaxed text-ink-muted">
           {caption}
         </figcaption>
       </figure>
@@ -107,12 +109,12 @@ export function DetectionClip({ src, caption, maxWidth, aspect, mode }: Props) {
 
   return (
     <figure className="w-full" style={{ maxWidth: `${maxWidth}px` }}>
-      <div className="relative overflow-hidden rounded-sm bg-surface-sunken">
-        {/* Corner ticks, matching DetectionFrame so the motif carries over. */}
-        <span className="pointer-events-none absolute left-2 top-2 z-10 h-1.5 w-1.5 border-l border-t border-ink/50" />
-        <span className="pointer-events-none absolute right-2 top-2 z-10 h-1.5 w-1.5 border-r border-t border-ink/50" />
-        <span className="pointer-events-none absolute bottom-2 left-2 z-10 h-1.5 w-1.5 border-b border-l border-ink/50" />
-        <span className="pointer-events-none absolute bottom-2 right-2 z-10 h-1.5 w-1.5 border-b border-r border-ink/50" />
+      {/*
+       * Hairline border on a paper well, not a filled dark box. The corner ticks
+       * that used to sit here are gone: they belonged to the detection-HUD
+       * vocabulary of the previous design, and a plate is framed by its rule.
+       */}
+      <div className="relative overflow-hidden border border-rule bg-paper-raised">
 
         {/*
          * No CSS bounding boxes over this. The footage is real model output, so
@@ -143,7 +145,7 @@ export function DetectionClip({ src, caption, maxWidth, aspect, mode }: Props) {
           <button
             type="button"
             onClick={toggle}
-            className="absolute bottom-3 right-3 z-10 grid h-9 w-9 place-items-center rounded-sm border border-line-strong bg-surface/85 text-ink backdrop-blur-sm transition-colors hover:border-detect hover:text-detect"
+            className="absolute bottom-3 right-3 z-10 grid h-10 w-10 place-items-center rounded-full border border-edge bg-paper/85 text-ink backdrop-blur-sm transition-colors hover:border-burgundy hover:bg-burgundy hover:text-paper"
           >
             <Icon name={playing ? 'pause' : 'play'} size={13} />
             <span className="sr-only">{playing ? 'Pause' : 'Play'} the detection clip</span>
@@ -151,14 +153,12 @@ export function DetectionClip({ src, caption, maxWidth, aspect, mode }: Props) {
         )}
       </div>
 
-      <figcaption
-        className={
-          ambient
-            ? 'mt-2.5 font-mono text-[0.625rem] leading-relaxed tracking-[0.04em] text-ink-faint'
-            : 'mt-3 max-w-2xl text-[0.8125rem] leading-relaxed text-ink-faint'
-        }
-      >
-        {caption}
+      {/* Plate caption: the figure number in burgundy, then the description.
+          Aligned to the top rather than the baseline, because the description
+          wraps and a baseline-aligned number drops below its own first line. */}
+      <figcaption className="mt-3 flex items-start gap-3">
+        {plate && <span className="label mt-0.5 shrink-0 font-semibold text-burgundy">{plate}</span>}
+        <span className="max-w-2xl text-[0.8125rem] leading-relaxed text-ink-muted">{caption}</span>
       </figcaption>
     </figure>
   )

@@ -11,11 +11,15 @@ export function Achievements() {
         id="achievements-heading"
       />
 
-      <ul className="space-y-5">
+      {/* Hairline-separated rows rather than a left bar, so the rule vocabulary
+          stays consistent with the rest of the page. */}
+      <ul className="border-t border-rule">
         {achievements.map((achievement) => (
-          <li key={achievement.title} className="border-l-2 border-line-strong pl-4">
-            <h3 className="text-[0.9375rem] font-semibold text-ink">{achievement.title}</h3>
-            <p className="mt-1 text-sm text-ink-muted">{achievement.detail}</p>
+          <li key={achievement.title} className="border-b border-rule py-5">
+            <h3 className="display text-xl text-ink">{achievement.title}</h3>
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-muted">
+              {achievement.detail}
+            </p>
           </li>
         ))}
       </ul>

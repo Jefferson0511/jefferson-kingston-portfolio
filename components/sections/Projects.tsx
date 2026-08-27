@@ -14,11 +14,10 @@ export function Projects() {
          * falls back to the profile, which cannot 404 and claims nothing that
          * clicking would disprove.
          */}
-        {otherProjects.map((project, i) => (
+        {otherProjects.map((project) => (
           <ProjectCard
             key={project.slug}
             project={project}
-            index={i + 2}
             href={project.repoVerified ? project.links[0]?.href : profile.githubUrl}
           />
         ))}

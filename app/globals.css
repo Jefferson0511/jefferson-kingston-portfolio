@@ -2,51 +2,49 @@
 
 @theme {
   /*
-   * Near-black base. The original brief ruled this out, and Jefferson lifted
-   * that on 2026-08-26 after comparing the site against a bolder one. The
-   * practical gain is headroom: on #0a0c0f a high-chroma accent clears 14:1,
-   * where the old blue-gray forced every accent to stay muted to stay legible.
+   * Palette from Jefferson's spec, 2026-08-27. Beige universally, charcoal for
+   * text, burgundy STRICTLY for interactive elements. Ratios measured against
+   * --color-paper.
+   *
+   * The previous near-black + Anton version was rejected for reading as a
+   * reskin of a benchmark site rather than a design of its own. Its component
+   * vocabulary is off-limits: stat-panel rows, per-category badge colours,
+   * ghost numerals behind cards, drifting blur blobs.
    */
-  --color-surface: #0a0c0f;
-  --color-surface-raised: #12151a;
-  --color-surface-sunken: #06080a;
+  --color-paper: #faf9f6;
+  /* Figure wells only. There are no filled cards: the spec replaces boxes and
+     shadows with hairlines, so this is used sparingly. */
+  --color-paper-raised: #f2f0ea;
 
-  /* Ink. Ratios measured against --color-surface. */
-  --color-ink: #f2f5f7;        /* 17.9:1 */
-  --color-ink-muted: #9aa7b4;  /*  8.0:1 */
-  --color-ink-faint: #7d8b99;  /*  5.6:1 */
-
-  /* Primary accent: detected / confirmed. */
-  --color-detect: #2df5d4;     /* 14.1:1 */
-  --color-alert: #ffb020;      /* 10.7:1 */
+  --color-ink: #1f2937;        /* 13.9:1 */
+  --color-ink-muted: #616770;  /*  5.4:1 — ink at 70% over paper */
+  --color-ink-faint: #6c727a;  /*  4.6:1 — ink at 65%, the floor for body text */
 
   /*
-   * Category colours for project badges. The old two-colour rule was enforced
-   * structurally by there being no third token; that rule is deliberately gone.
-   * These exist only to code project domains, never to decorate, and every one
-   * is above 4.5:1 so a badge label is readable as text and not just as a hue.
+   * Interactive only, per the spec: circular toggles, filled buttons, hover
+   * states, active tags. It is never a background band and never body text.
    */
-  --color-cat-vision: #2df5d4;  /* 14.1:1 */
-  --color-cat-backend: #a78bfa; /*  7.2:1 */
-  --color-cat-security: #ff4d7e;/*  6.2:1 */
-  --color-cat-research: #4dd8ff;/* 11.7:1 */
+  --color-burgundy: #4a0e17;   /* 14.6:1 */
 
-  /* Lines. Two tokens on purpose: one clears WCAG 1.4.11, one does not. */
-  --color-line-strong: #5a6a7a; /* 3.5:1 — interactive boundaries */
-  --color-line: #232a33;        /* 1.4:1 — DECORATIVE DIVIDERS ONLY */
+  /*
+   * Two hairline tokens, and the split is a correctness decision.
+   *
+   * The spec asked for border-charcoal/20 throughout. That measures 1.48:1,
+   * which is right for a decorative rule and less than half of what WCAG
+   * 1.4.11 requires for the boundary of an interactive control. The spec also
+   * asks for thin-bordered interactive pills, so one value cannot serve both.
+   */
+  --color-rule: #cecfd0;       /*  1.5:1 — DECORATIVE RULES ONLY */
+  --color-edge: #8d9197;       /*  3.0:1 — interactive boundaries */
 
-  --font-display: var(--font-anton), "Arial Narrow", sans-serif;
+  --font-display: var(--font-playfair), Georgia, serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, monospace;
 
-  /*
-   * The hero name. Previously capped at 3.25rem (52px), which was the single
-   * biggest reason the page read as timid. 8.25rem is 132px, the size the
-   * design was proofed at.
-   */
-  --text-display: clamp(3rem, 11vw, 8.25rem);
-  /* Section headings, previously 1.375rem (22px). */
-  --text-section: clamp(2rem, 5.5vw, 3.5rem);
+  /* Extreme contrast between display and body is the whole idea, so the display
+     scale is set deliberately far from anything else on the page. */
+  --text-display: clamp(2.75rem, 8.5vw, 7.25rem);
+  --text-section: clamp(2rem, 5.5vw, 4rem);
 }
 
 @layer base {
@@ -55,37 +53,68 @@
   }
 
   body {
-    background-color: var(--color-surface);
+    background-color: var(--color-paper);
     color: var(--color-ink);
     font-family: var(--font-sans);
-    line-height: 1.6;
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
   }
 
-  /* Every numeral on this site is mono and tabular. */
+  /*
+   * Paper grain. The point of a warm beige is that it should feel like printed
+   * stock rather than a flat screen fill, and a fixed noise layer at very low
+   * opacity is what sells that. Decorative, so it is inert to pointers and
+   * hidden from assistive tech, and faint enough that no measured contrast
+   * ratio above is affected.
+   */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.032;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Everything real sits above the grain. */
+  body > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Every numeral in running text is mono and tabular. Display figures use the
+     serif instead, which is set per-use. */
   .num {
     font-family: var(--font-mono);
     font-variant-numeric: tabular-nums;
   }
 
   /*
-   * Display type. Anton is a heavy condensed face designed for large sizes, so
-   * it needs negative tracking and tight leading to stop the caps from looking
-   * gappy. Applied here rather than repeated on every heading.
+   * Playfair is a high-contrast display serif. At the sizes used here it needs
+   * negative tracking and tight leading, or the thin strokes and wide sidebearings
+   * make it look loose. Not uppercased: all-caps throws away the ascender and
+   * descender contrast that is the reason to choose this face.
    */
   .display {
     font-family: var(--font-display);
-    font-weight: 400;
-    line-height: 0.85;
-    letter-spacing: -0.015em;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.025em;
+  }
+
+  /* Small technical labels, the counterweight to the display type. */
+  .label {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
   }
 
-  /* outline:none is prohibited project-wide. Kept explicitly because the site
-     this design was benchmarked against had no focus states at all. */
+  /* outline:none is prohibited project-wide. */
   :focus-visible {
-    outline: 2px solid var(--color-detect);
-    outline-offset: 2px;
+    outline: 2px solid var(--color-burgundy);
+    outline-offset: 3px;
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -109,49 +138,33 @@
 /*
  * ─── Motion ───────────────────────────────────────────────────────────────
  *
+ * CSS rather than Framer Motion, by Jefferson's choice: these specific effects
+ * need no runtime library, and the project ships nothing beyond Next and React.
+ *
  * Two rules govern all of it:
  *
  * 1. Motion is opt-in, never load-bearing. Every animation ends at the state
  *    the element already has in the HTML, so a browser ignoring all of this
- *    shows a complete page. Nothing is hidden waiting to be revealed.
+ *    shows a complete page.
  *
  * 2. `prefers-reduced-motion: no-preference` gates each block explicitly. The
  *    global `reduce` override cannot be relied on for scroll-driven animations,
- *    because their progress comes from scroll position rather than from
- *    `animation-duration`, so zeroing the duration does nothing to them.
+ *    whose progress comes from scroll position rather than duration.
  */
 @layer components {
   @media (prefers-reduced-motion: no-preference) {
     .enter {
-      animation: enter 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation: enter 800ms cubic-bezier(0.16, 1, 0.3, 1) both;
       animation-delay: var(--enter-delay, 0ms);
-    }
-
-    /* Ambient background wash. Purely decorative, sits behind everything at
-       low opacity, and carries no information. */
-    .blob {
-      animation: blob-drift var(--blob-duration, 18s) ease-in-out infinite;
-    }
-
-    .pulse {
-      animation: pulse 2.4s ease-in-out infinite;
     }
   }
 
-  /*
-   * Scroll reveal with no JavaScript: a view() timeline ties progress to the
-   * element's own position in the viewport. Firefox has not shipped it, so
-   * @supports means those users get the static page rather than a broken one.
-   *
-   * :not(:first-of-type) exempts the hero, which is on screen at load and owns
-   * .enter instead.
-   */
   @supports (animation-timeline: view()) {
     @media (prefers-reduced-motion: no-preference) {
       main > section:not(:first-of-type) {
         animation: enter linear both;
         animation-timeline: view();
-        animation-range: entry 5% cover 22%;
+        animation-range: entry 4% cover 20%;
       }
 
       .bar-grow {
@@ -162,12 +175,33 @@
       }
     }
   }
+
+  /*
+   * Accordion height animation without JavaScript measuring anything.
+   * grid-template-rows interpolates between 0fr and 1fr, which is the one way
+   * to transition to a content-derived height in CSS. The inner wrapper needs
+   * min-height:0 and overflow:hidden or the row refuses to collapse.
+   */
+  .accordion-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 420ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .accordion-panel[data-open="true"] {
+    grid-template-rows: 1fr;
+  }
+
+  .accordion-panel > * {
+    min-height: 0;
+    overflow: hidden;
+  }
 }
 
 @keyframes enter {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
@@ -175,33 +209,11 @@
   }
 }
 
-/* Sensor bars fill as the fusion diagram scrolls in, so the chart reads as a
-   measurement being taken rather than a static bar chart. */
 @keyframes bar-grow {
   from {
     transform: scaleX(0);
   }
   to {
     transform: scaleX(1);
-  }
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.3;
-  }
-}
-
-@keyframes blob-drift {
-  0%,
-  100% {
-    transform: translate(0, 0) scale(1);
-  }
-  50% {
-    transform: translate(-36px, 24px) scale(1.08);
   }
 }

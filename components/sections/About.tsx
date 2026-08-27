@@ -10,7 +10,7 @@ export function About() {
         <p className="max-w-2xl leading-relaxed text-ink-muted">{profile.bio}</p>
       ) : (
         /* Same treatment as the resume: a visible marker, never invented boilerplate. */
-        <p className="max-w-2xl rounded-sm border border-dashed border-alert p-4 font-mono text-xs uppercase tracking-[0.1em] text-alert">
+        <p className="max-w-2xl border border-dashed border-burgundy p-4 font-mono text-xs uppercase tracking-[0.1em] text-burgundy">
           Bio pending &mdash; 2 to 3 sentences in Jefferson&rsquo;s own voice
         </p>
       )}

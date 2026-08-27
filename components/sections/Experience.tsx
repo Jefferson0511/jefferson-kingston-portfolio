@@ -1,4 +1,5 @@
 import { SectionHeader } from '@/components/primitives/SectionHeader'
+import { Accordion } from '@/components/primitives/Accordion'
 import { experience } from '@/content/experience'
 
 export function Experience() {
@@ -9,22 +10,23 @@ export function Experience() {
         label="Experience"
         title="Where I have worked"
         id="experience-heading"
+        intro="Two internships, both hands-on with computer vision pipelines rather than adjacent to them."
       />
 
-      <ul className="space-y-8">
-        {experience.map((role) => (
-          <li key={role.org}>
-            <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <h3 className="text-[1.0625rem] font-semibold text-ink">{role.org}</h3>
-              <span className="num text-[0.6875rem] text-ink-faint">{role.period}</span>
-            </div>
-            <p className="mt-0.5 font-mono text-[0.6875rem] uppercase tracking-[0.13em] text-detect">
-              {role.title}
-            </p>
-            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-muted">{role.summary}</p>
-          </li>
-        ))}
-      </ul>
+      {/*
+       * An accordion rather than a flat list. The organisation and role stay
+       * visible so the section is scannable at a glance, and the detail is one
+       * click away for anyone who wants it. Collapsing by default also stops
+       * this section competing with the projects grid for attention.
+       */}
+      <Accordion
+        items={experience.map((role) => ({
+          title: role.org,
+          meta: role.title,
+          trailing: role.period,
+          body: role.summary,
+        }))}
+      />
     </section>
   )
 }

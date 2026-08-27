@@ -4,7 +4,7 @@ import { SectionHeader } from '@/components/primitives/SectionHeader'
 import { DetectionFrame } from '@/components/primitives/DetectionFrame'
 import { DetectionClip } from '@/components/primitives/DetectionClip'
 import { MetricStrip } from '@/components/primitives/MetricStrip'
-import { EvidenceChip } from '@/components/primitives/EvidenceChip'
+import { Pill } from '@/components/primitives/Pill'
 import { ChannelDiagram } from '@/components/primitives/ChannelDiagram'
 import { PublicationSchema } from '@/components/primitives/StructuredData'
 import { Icon } from '@/components/primitives/Icon'
@@ -22,7 +22,7 @@ const repo = featuredProject.links[0]
 
 function Pending({ children }: { children: React.ReactNode }) {
   return (
-    <p className="max-w-2xl rounded-sm border border-dashed border-alert p-4 font-mono text-xs uppercase tracking-[0.1em] text-alert">
+    <p className="max-w-2xl border border-dashed border-burgundy p-4 font-mono text-xs uppercase tracking-[0.1em] text-burgundy">
       {children}
     </p>
   )
@@ -54,7 +54,7 @@ export default function WildlifeIntrusionCaseStudy() {
       <section aria-labelledby="cs-heading" className="mb-20">
         <Link
           href="/"
-          className="inline-block py-1 font-mono text-[0.625rem] uppercase tracking-[0.13em] text-ink-faint transition-colors hover:text-detect"
+          className="inline-block py-1 font-mono text-[0.625rem] uppercase tracking-[0.13em] text-ink-faint transition-colors hover:text-burgundy"
         >
           &larr; Back
         </Link>
@@ -65,9 +65,9 @@ export default function WildlifeIntrusionCaseStudy() {
           {featuredProject.title}
         </h1>
         <div className="mt-4 flex flex-wrap items-center gap-1.5">
-          <EvidenceChip variant="solid">IEEE Xplore &middot; {featuredProject.date}</EvidenceChip>
+          <Pill solid>IEEE Xplore &middot; {featuredProject.date}</Pill>
           {featuredProject.stack.map((tech) => (
-            <EvidenceChip key={tech}>{tech}</EvidenceChip>
+            <Pill key={tech}>{tech}</Pill>
           ))}
         </div>
 
@@ -78,7 +78,7 @@ export default function WildlifeIntrusionCaseStudy() {
             href={repo.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-5 inline-flex items-center gap-2 rounded-sm border border-line-strong px-4 py-2 font-mono text-xs uppercase tracking-[0.1em] text-ink transition-colors hover:border-detect hover:text-detect"
+            className="mt-5 inline-flex items-center gap-2 border border-edge px-4 py-2 font-mono text-xs uppercase tracking-[0.1em] text-ink transition-colors hover:border-burgundy hover:text-burgundy"
           >
             <Icon name="github" size={14} />
             Source
@@ -172,7 +172,7 @@ export default function WildlifeIntrusionCaseStudy() {
       {publication && (
         <section aria-labelledby="cs-publication" className="mb-12">
           <SectionHeader index="07" label="Publication" title="Citation" id="cs-publication" />
-          <div className="border-l-2 border-detect pl-4">
+          <div className="border-l-2 border-burgundy pl-4">
             <h3 className="max-w-2xl text-[1.0625rem] font-semibold leading-snug text-ink">
               {publication.title}
             </h3>

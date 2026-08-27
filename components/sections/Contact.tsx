@@ -10,20 +10,20 @@ const MARKS: Record<string, IconName> = {
 // Every tile is well past the 24x24 WCAG 2.2 SC 2.5.8 floor, which the previous
 // bulleted list of 20px text links was not.
 const tile =
-  'flex items-center gap-3 rounded-sm border border-line-strong px-4 py-3 text-sm text-ink transition-colors hover:border-detect hover:text-detect'
+  'flex items-center gap-3  border border-edge px-4 py-3 text-sm text-ink transition-colors hover:border-burgundy hover:text-burgundy'
 
 export function Contact() {
   return (
     <section aria-labelledby="contact-heading" className="mb-12">
       <SectionHeader index="09" label="Contact" title="Get in touch" id="contact-heading" />
 
-      <div className="rounded-sm border border-line p-5 sm:p-6">
+      <div className="border border-rule p-5 sm:p-6">
         {profile.availability ? (
           <p className="max-w-xl leading-relaxed text-ink-muted">{profile.availability}</p>
         ) : (
           /* Same amber pending convention as the bio: an unfilled gap should be
              loud during development, never quietly absent at launch. */
-          <p className="max-w-xl rounded-sm border border-dashed border-alert p-3 font-mono text-xs uppercase tracking-[0.1em] text-alert">
+          <p className="max-w-xl border border-dashed border-burgundy p-3 font-mono text-xs uppercase tracking-[0.1em] text-burgundy">
             Pending &mdash; which roles and which term, in Jefferson&rsquo;s words
           </p>
         )}
@@ -32,7 +32,7 @@ export function Contact() {
             are equal-weight outlines. */}
         <a
           href={`mailto:${profile.email}`}
-          className="mt-5 flex w-full items-center justify-between gap-3 rounded-sm bg-detect px-4 py-3.5 text-surface transition-opacity hover:opacity-90 sm:w-auto"
+          className="mt-5 flex w-full items-center justify-between gap-3 bg-burgundy px-4 py-3.5 text-paper transition-opacity hover:opacity-90 sm:w-auto"
         >
           <span className="flex min-w-0 items-center gap-3">
             <Icon name="mail" size={17} />

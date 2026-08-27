@@ -1,5 +1,5 @@
 import { SectionHeader } from '@/components/primitives/SectionHeader'
-import { EvidenceChip } from '@/components/primitives/EvidenceChip'
+import { Pill } from '@/components/primitives/Pill'
 import { skillGroups } from '@/content/skills'
 
 export function Skills() {
@@ -17,7 +17,7 @@ export function Skills() {
             <ul className="flex flex-wrap gap-1.5">
               {group.skills.map((skill) => (
                 <li key={skill}>
-                  <EvidenceChip>{skill}</EvidenceChip>
+                  <Pill>{skill}</Pill>
                 </li>
               ))}
             </ul>
